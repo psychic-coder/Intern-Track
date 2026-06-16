@@ -11,6 +11,7 @@ import { ApplicationForm } from '@/components/ApplicationForm';
 
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Application } from '@/types/application';
+import { getDemoData } from '@/constants/demoData';
 import { ApplicationList } from '@/components/ApplicationList';
 import { Analytics } from '@/components/Analytics';
 import { Footer } from '@/components/Footer';
@@ -25,6 +26,14 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [editingApp, setEditingApp] = useState<Application | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+
+  // Seed demo data on initial load if no data exists
+  useEffect(() => {
+    const stored = window.localStorage.getItem('interntrack-applications');
+    if (!stored) {
+      setApplications(getDemoData());
+    }
+  }, [setApplications]);
 
   // Keyboard shortcuts
   useEffect(() => {
